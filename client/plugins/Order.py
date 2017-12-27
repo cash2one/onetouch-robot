@@ -24,4 +24,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return any(word in text for word in ["最新订单","订单状态"])
+    return any(word in text for word in ["查询订单","最新订单","订单状态"])
