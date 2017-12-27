@@ -8,6 +8,7 @@ import time
 import yaml
 import argparse
 import threading
+import pygame
 from client import tts
 from client import stt
 from client import dingdangpath
@@ -31,7 +32,8 @@ parser.add_argument('--diagnose', action='store_true',
 parser.add_argument('--debug', action='store_true', help='Show debug messages')
 parser.add_argument('--info', action='store_true', help='Show info messages')
 args = parser.parse_args()
-
+# args.debug = True
+# args.local = True
 if args.local:
     from client.local_mic import Mic
 else:
@@ -61,13 +63,13 @@ class WechatBot(WXBot):
     def handle_msg_all(self, msg):
         # ignore the msg when handling plugins
         if msg['msg_type_id'] == 1 and \
-           msg['to_user_id'] == self.my_account['UserName']:
+                msg['to_user_id'] == self.my_account['UserName']:
             profile = self.brain.profile
             # reply to self
             if msg['content']['type'] == 0:
                 msg_data = msg['content']['data']
-                print msg_data
-                if msg_data.startswith(profile['robot_name_cn']+": "):
+                print(msg_data)
+                if msg_data.startswith(profile['robot_name_cn'] + ": "):
                     return
                 if self.music_mode is not None:
                     return self.handle_music_mode(msg_data)
@@ -76,22 +78,22 @@ class WechatBot(WXBot):
                 mp3_file = os.path.join(dingdangpath.TEMP_PATH,
                                         'voice_%s.mp3' % msg['msg_id'])
                 # echo or command?
-                if 'wechat_echo' in profile and not profile['wechat_echo']:
-                    # 执行命令
-                    mic = self.brain.mic
-                    wav_file = mp3_to_wav(mp3_file)
-                    with open(wav_file) as f:
-                        command = mic.active_stt_engine.transcribe(f)
-                        if command:
-                            if self.music_mode is not None:
-                                return self.handle_music_mode(msg_data)
-                            self.brain.query(command, self, True)
-                        else:
-                            mic.say("什么？")
-                else:
-                    # 播放语音
-                    player = SimpleMp3Player()
-                    player.play_mp3(mp3_file)
+                # if 'wechat_echo' in profile and not profile['wechat_echo']:
+                #     # 执行命令
+                #     mic = self.brain.mic
+                #     wav_file = mp3_to_wav(mp3_file)
+                #     with open(wav_file) as f:
+                #         command = mic.active_stt_engine.transcribe(f)
+                #         if command:
+                #             if self.music_mode is not None:
+                #                 return self.handle_music_mode(msg_data)
+                #             self.brain.query(command, self, True)
+                #         else:
+                #             mic.say("什么？")
+                # else:
+                #     # 播放语音
+                #     player = SimpleMp3Player()
+                #     player.play_mp3(mp3_file)
 
 
 class Dingdang(object):
@@ -159,8 +161,10 @@ class Dingdang(object):
 
     def run(self):
         if 'first_name' in self.config:
-            salutation = (u"%s 我能为您做什么?"
-                          % self.config["first_name"])
+            #            salutation = (u"%s 我能为您做什么?"
+            #                          % self.config["first_name"])
+            #             salutation = "大家好，我是一大通小爱，这次我来和大家合作，祝大家极客松成功！"
+            salutation = "大家好，我是一达通咸鱼"
         else:
             salutation = "主人，我能为您做什么?"
 
@@ -177,7 +181,18 @@ class Dingdang(object):
             conversation.wxbot = self.wxBot
             t = threading.Thread(target=self.start_wxbot)
             t.start()
-
+        # print(dingdangpath.data('audio', 'faded.mp3'))
+        # pygame.mixer.init()
+        # pygame.mixer.music.load(dingdangpath.data('audio', 'faded.mp3'));
+        # pygame.mixer.music.play()
+        # time.sleep(5)
+        # pygame.mixer.music.stop()
+        ##        pygame.mixer.quit()
+        ##        music = mp3play.load('play '+dingdangpath.data('audio', 'faded.mp3'))
+        ##        music.play()
+        ##        time.sleep(10)
+        ##        music.stop()
+        #        os.system('play '+dingdangpath.data('audio', 'faded.mp3'));
         self.mic.say(salutation)
         conversation.handleForever()
 
@@ -186,31 +201,31 @@ if __name__ == "__main__":
 
     print('''
 *******************************************************"
-*             叮当 - 中文语音对话机器人               *
-*          (c) 2017 潘伟洲 <m@hahack.com>             *
-*   https://github.com/wzpan/dingdang-robot.git       *
+*                一达通客户服务终端                   *
+*                2017极客松参赛作品                   *
 *******************************************************
 
 如需查看log，可以执行 `tail -f 叮当所在目录/temp/dingdang.log`
 
 ''')
+    print(dingdangpath)
 
     logging.basicConfig(
-        filename=os.path.join(
-            dingdangpath.TEMP_PATH, "dingdang.log"
-        ),
+        ##        filename=os.path.join(
+        ##            dingdangpath.TEMP_PATH, "dingdang.log"
+        ##        ),
         filemode="w",
         format='%(asctime)s %(filename)s[line:%(lineno)d] \
         %(levelname)s %(message)s',
-        level=logging.INFO)
+        level=logging.DEBUG)
 
     logger = logging.getLogger()
-    logger.getChild("client.stt").setLevel(logging.INFO)
+    logger.getChild("client.stt").setLevel(logging.DEBUG)
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
     elif args.info:
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.DEBUG)
 
     if not args.no_network_check and not diagnose.check_network_connection():
         logger.warning("Network not connected. This may prevent Dingdang " +

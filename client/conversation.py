@@ -27,7 +27,7 @@ class Conversation(object):
         else:
             if self.profile['do_not_bother']['enable']:
                 if 'since' not in self.profile['do_not_bother'] or \
-                   'till' not in self.profile['do_not_bother']:
+                        'till' not in self.profile['do_not_bother']:
                     return True
                 else:
                     since = self.profile['do_not_bother']['since']
@@ -69,7 +69,10 @@ class Conversation(object):
                 if not transcribed or not threshold:
                     self._logger.info("Nothing has been said or transcribed.")
                     continue
-                self._logger.info("Keyword '%s' has been said!", self.persona)
+                if threshold < 500:
+                    self._logger.debug("threshold: %d, skip~", threshold)
+                    continue
+                self._logger.info("Keyword '%s' has been said! (%s)", self.persona, threshold)
             else:
                 self._logger.debug("Skip passive listening")
                 if not self.mic.chatting_mode:
@@ -83,6 +86,6 @@ class Conversation(object):
             pixels.think()
             if input:
                 self.brain.query(input, self.wxbot)
-            else:
-                self.mic.say("什么?")
+            # else:
+            #     self.mic.say("对不起，我没有听懂")
             pixels.off()
