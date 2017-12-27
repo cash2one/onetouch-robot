@@ -167,7 +167,7 @@ class Dingdang(object):
             #            salutation = (u"%s 我能为您做什么?"
             #                          % self.config["first_name"])
             #             salutation = "大家好，我是一大通小爱，这次我来和大家合作，祝大家极客松成功！"
-            salutation = "一达通小爱很高兴为您服务，根据一达通消息，蛇口海关目前较为拥堵，建议您使用其他港口出口商品。"
+            salutation = "一达通小爱很高兴为您服务，收到一达通最新消息，蛇口海关和文锦渡海关目前较为拥堵，建议您使用其他港口出口商品。"
         else:
             salutation = "主人，我能为您做什么?"
 

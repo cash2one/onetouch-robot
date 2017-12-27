@@ -14,7 +14,7 @@ def handle(text, mic, profile, wxbot=None):
                    number)
         wxBot -- wechat robot
     """
-    mic.say(u"尊敬的客户，您的订单 东疆港区到澳大利亚的订单119186-26208状态在今天下午3:55分由办理中变为已完成 ")
+    mic.say(u"尊敬的客户，您的订单 深圳大鹏海关到澳大利亚的订单一一九一八六-二六二零八状态在今天下午3:55分由办理中变为已完成 ")
 
 
 def isValid(text):
@@ -24,4 +24,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return any(word in text for word in ["订单"])
+    return any(word in text for word in ["最新订单","订单状态"])
