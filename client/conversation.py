@@ -56,7 +56,8 @@ class Conversation(object):
                                       str(notif))
                     self.mic.say(str(notif))
 
-            if self.mic.stop_passive:
+            if self.mic.stop_passive or self.mic.stop_listening:
+                time.sleep(0.2)
                 continue
 
             if not self.mic.skip_passive:

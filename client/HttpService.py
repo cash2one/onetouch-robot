@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from pygame import mixer
+from subprocess import call
 from threading import Thread
 from urlparse import urlparse, parse_qs
 
@@ -10,9 +10,10 @@ instance = None
 
 
 def play_audio(path):
-    mixer.init()
-    mixer.music.load(path)
-    mixer.music.play()
+    call("mpv " + path + " &", shell=True)
+    # mixer.init()
+    # mixer.music.load(path)
+    # mixer.music.play()
 
 
 class HttpServiceHandler(BaseHTTPRequestHandler):
@@ -25,9 +26,13 @@ class HttpServiceHandler(BaseHTTPRequestHandler):
         self._set_headers()
         self.wfile.write(self.address_string())
         params = parse_qs(urlparse(self.path).query)
-        if params.has_key('text'):
+        if 'text' in params:
             instance.mic.say(params['text'][0])
-        elif params.has_key('file'):
+        elif 'enable' in params:
+            instance.mic.stop_listening = False
+        elif 'disable' in params:
+            instance.mic.stop_listening = True
+        elif 'file' in params:
             play_audio("/home/pi/dingdang/static/audio/" + params['file'][0])
 
     def do_HEAD(self):

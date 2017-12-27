@@ -32,8 +32,9 @@ class Mic:
         acive_stt_engine -- performs STT while Dingdang is in active listen
                             mode
         """
+        self.stop_listening = False
         self.profile = profile
-        self.robot_name = u'小爱'
+        self.robot_name = u'叮当'
         if 'robot_name_cn' in profile:
             self.robot_name = profile['robot_name_cn']
         self._logger = logging.getLogger(__name__)
@@ -293,6 +294,10 @@ class Mic:
         lastN = [THRESHOLD * 1.2 for i in range(30)]
 
         for i in range(0, RATE / CHUNK * LISTEN_TIME):
+            if self.stop_listening:
+                time.sleep(0.2)
+                continue
+
             try:
                 data = stream.read(CHUNK, exception_on_overflow=False)
                 frames.append(data)
