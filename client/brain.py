@@ -59,6 +59,8 @@ class Brain(object):
                     plugins.append(mod)
                     if name in thirdparty_exclude_plugins:
                         exclude_plugins.append(mod)
+                elif hasattr(mod, 'init') and callable(mod.init):
+                    mod.init(cls)
                 else:
                     logger.warning("Skipped plugin '%s' because it misses " +
                                    "the WORDS constant.", name)

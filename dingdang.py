@@ -17,6 +17,8 @@ from client.wxbot import WXBot
 from client.conversation import Conversation
 from client.tts import SimpleMp3Player
 
+from client.HttpService import HttpService
+
 from client.audio_utils import mp3_to_wav
 
 # Add dingdangpath.LIB_PATH to sys.path
@@ -160,6 +162,7 @@ class Dingdang(object):
         self.wxBot.run(self.mic)
 
     def run(self):
+        HttpService(self)
         if 'first_name' in self.config:
             #            salutation = (u"%s 我能为您做什么?"
             #                          % self.config["first_name"])
@@ -193,7 +196,7 @@ class Dingdang(object):
         ##        time.sleep(10)
         ##        music.stop()
         #        os.system('play '+dingdangpath.data('audio', 'faded.mp3'));
-        self.mic.say(salutation)
+        # self.mic.say(salutation)
         conversation.handleForever()
 
 
@@ -217,7 +220,7 @@ if __name__ == "__main__":
         filemode="w",
         format='%(asctime)s %(filename)s[line:%(lineno)d] \
         %(levelname)s %(message)s',
-        level=logging.DEBUG)
+        level=logging.INFO)
 
     logger = logging.getLogger()
     logger.getChild("client.stt").setLevel(logging.DEBUG)

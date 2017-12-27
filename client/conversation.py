@@ -69,9 +69,9 @@ class Conversation(object):
                 if not transcribed or not threshold:
                     self._logger.info("Nothing has been said or transcribed.")
                     continue
-                if threshold < 500:
-                    self._logger.debug("threshold: %d, skip~", threshold)
-                    continue
+                # if threshold < 500:
+                #     self._logger.debug("threshold: %d, skip~", threshold)
+                #     continue
                 self._logger.info("Keyword '%s' has been said! (%s)", self.persona, threshold)
             else:
                 self._logger.debug("Skip passive listening")

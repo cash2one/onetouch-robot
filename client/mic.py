@@ -33,7 +33,7 @@ class Mic:
                             mode
         """
         self.profile = profile
-        self.robot_name = u'叮当'
+        self.robot_name = u'小爱'
         if 'robot_name_cn' in profile:
             self.robot_name = profile['robot_name_cn']
         self._logger = logging.getLogger(__name__)

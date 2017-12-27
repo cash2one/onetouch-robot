@@ -2,9 +2,8 @@
 import datetime
 from client.app_utils import getTimezone
 from semantic.dates import DateService
-import urllib2
 
-WORDS = [u"MESSAGE", u"XIAOXI"]
+WORDS = [u"NOTES", u"ZHUYI", u"SHIXIANG"]
 SLUG = "message"
 
 
@@ -19,12 +18,8 @@ def handle(text, mic, profile, wxbot=None):
                    number)
         wxBot -- wechat robot
     """
-
-    tz = getTimezone(profile)
-    now = datetime.datetime.now(tz=tz)
     service = DateService()
-    response = urllib2.urlopen('http://30.135.15.126:8080/api/message')
-    mic.say(u"尊敬的客户，收到一条消息，消息内容为：， %s " % response.read())
+    mic.say(u"尊敬的客户，注意事项如下：公告自2017年11月1日起施行。具体时间以出口货物报关单上注明的出口日期为准。《国家税务总局关于外贸综合服务企业出口货物退(免)税有关问题的公告》（国家税务总局公告2014年第13号）同时废止。 ")
 
 
 def isValid(text):
@@ -34,4 +29,4 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return any(word in text for word in ["消息"])
+    return all(word in text for word in ["注意","事项"])

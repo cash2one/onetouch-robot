@@ -1,8 +1,4 @@
 # -*- coding: utf-8-*-
-import datetime
-from client.app_utils import getTimezone
-from semantic.dates import DateService
-
 WORDS = [u"ORDER", u"DINGDAN"]
 SLUG = "order"
 
@@ -18,12 +14,7 @@ def handle(text, mic, profile, wxbot=None):
                    number)
         wxBot -- wechat robot
     """
-
-    tz = getTimezone(profile)
-    now = datetime.datetime.now(tz=tz)
-    service = DateService()
-    response = service.convertTime(now)
-    mic.say(u"尊敬的客户，您当前有处理中的订单數100张， %s " % response)
+    mic.say(u"尊敬的客户，您的订单 东疆港区到澳大利亚的订单119186-26208状态在今天下午3:55分由办理中变为已完成 ")
 
 
 def isValid(text):
