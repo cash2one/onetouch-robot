@@ -10,7 +10,7 @@ instance = None
 
 
 def play_audio(path):
-    call("mpv " + path + " &", shell=True)
+    call("mpv " + path + " --no-video --no-config --force-window=no &", shell=True)
     # mixer.init()
     # mixer.music.load(path)
     # mixer.music.play()
@@ -32,6 +32,10 @@ class HttpServiceHandler(BaseHTTPRequestHandler):
             instance.mic.stop_listening = False
         elif 'disable' in params:
             instance.mic.stop_listening = True
+        elif 'dial' in params:
+            call(["/usr/bin/linphonecsh", "dial", "8000"])
+        elif 'terminate' in params:
+            call(["/usr/bin/linphonecsh", "generic", "terminate"])
         elif 'file' in params:
             play_audio("/home/pi/dingdang/static/audio/" + params['file'][0])
 

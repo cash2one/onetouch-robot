@@ -1,4 +1,12 @@
 # -*- coding: utf-8-*-
+import os
+
+import time
+
+from subprocess import check_output
+
+import re
+
 WORDS = [u"PARTNER", u"PAIDANG"]
 SLUG = "partner"
 
@@ -16,6 +24,17 @@ def handle(text, mic, profile, wxbot=None):
     """
     mic.say(u"正在为您拨打拍档电话 ")
 
+    os.system("/usr/bin/linphonecsh generic 'call 8000 --audio-only'")
+
+    call_ended = False
+
+    while not call_ended:
+        time.sleep(2)
+        output = check_output(['/usr/bin/linphonecsh', 'generic', 'calls'])
+        if re.compile("No active call").match(output):
+            call_ended = True
+        else:
+            print 'still calling'
 
 
 def isValid(text):
@@ -25,4 +44,5 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return any(word in text for word in ["联系拍档","连续拍照"])
+    return re.compile("(联系|连线|连续|电话).*(拍档|拍照)").match(text)
+    # return any(word in text for word in ["联系拍档","连续拍照","联系拍照"])

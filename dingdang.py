@@ -196,7 +196,7 @@ class Dingdang(object):
         ##        time.sleep(10)
         ##        music.stop()
         #        os.system('play '+dingdangpath.data('audio', 'faded.mp3'));
-        self.mic.say(salutation)
+        # self.mic.say(salutation)
         conversation.handleForever()
 
 
