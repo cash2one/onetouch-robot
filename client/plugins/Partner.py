@@ -44,5 +44,9 @@ def isValid(text):
         Arguments:
         text -- user-input, typically transcribed speech
     """
-    return re.compile("(联系|连线|连续|电话).*(拍档|拍照)").match(text)
+    print "====================="
+    print(text)
+    print(re.compile("(联系|连线|连续|电话).*(拍档|拍照|拍大)").match(text));
+    print("=====================")
+    return re.compile("(联系|连线|连续|电话).*(拍档|拍照|拍大)").match(text)
     # return any(word in text for word in ["联系拍档","连续拍照","联系拍照"])
